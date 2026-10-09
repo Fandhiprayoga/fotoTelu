@@ -4,9 +4,9 @@ $logo = setting('App.siteLogo');
 $logoUrl = ! empty($logo) ? base_url($logo) : base_url('assets/img/stisla-fill.svg');
 $favicon = setting('App.siteFavicon');
 $faviconUrl = ! empty($favicon) ? base_url($favicon) : base_url('assets/img/stisla-fill.svg');
-$themePrimary = setting('App.themePrimary') ?? '#1ABB9C';
-$themePrimary = preg_match('/^#[0-9a-fA-F]{6}$/', (string) $themePrimary) ? $themePrimary : '#1ABB9C';
-$themeRadius = max(0, min(16, (int) (setting('App.themeRadius') ?? 6)));
+$themePrimary = setting('App.themePrimary') ?? '#E56A4A';
+$themePrimary = preg_match('/^#[0-9a-fA-F]{6}$/', (string) $themePrimary) ? $themePrimary : '#E56A4A';
+$themeRadius = max(0, min(16, (int) (setting('App.themeRadius') ?? 10)));
 $themeFontSize = max(13, min(16, (float) (setting('App.themeFontSize') ?? 14)));
 $themeMode = setting('App.themeMode') ?? 'system';
 $themeMode = in_array($themeMode, ['system', 'light', 'dark'], true) ? $themeMode : 'system';
@@ -34,6 +34,7 @@ $themeMode = in_array($themeMode, ['system', 'light', 'dark'], true) ? $themeMod
   <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
   <link rel="stylesheet" href="<?= base_url('gentelella/assets/main-v4-DB_ReeJG.css') ?>">
   <link rel="stylesheet" href="<?= base_url('gentelella/assets/dashboard-app.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('gentelella/assets/theme-9router.css') ?>">
   <style>
     :root {
       --primary: <?= esc($themePrimary) ?>;

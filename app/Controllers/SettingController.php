@@ -27,10 +27,10 @@ class SettingController extends BaseController
         'Mail.encryption'     => 'tls',
         'Mail.fromEmail'      => 'noreply@example.com',
         'Mail.fromName'       => 'CI4 RBAC',
-        'App.themePrimary'    => '#1ABB9C',
+        'App.themePrimary'    => '#E56A4A',
         'App.themeSidebar'    => 'dark',
-        'App.themeRadius'     => '6',
-        'App.themeSidebarWidth' => '252',
+        'App.themeRadius'     => '10',
+        'App.themeSidebarWidth' => '288',
         'App.themeFontSize'   => '14',
         'App.themeMode'       => 'system',
     ];

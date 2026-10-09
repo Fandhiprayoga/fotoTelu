@@ -193,7 +193,7 @@ $s = function (string $key) use ($settings) {
                       <div class="card-header"><div class="card-title">Warna utama</div></div>
                       <div class="card-body">
                         <div class="theme-settings-swatches" aria-label="Pilih warna utama">
-                          <?php foreach (['#1ABB9C' => 'Teal', '#066fd1' => 'Biru', '#4263eb' => 'Indigo', '#ae3ec9' => 'Ungu', '#d6336c' => 'Merah muda', '#d63939' => 'Merah', '#f76707' => 'Oranye', '#f59f00' => 'Kuning', '#2fb344' => 'Hijau', '#17a2b8' => 'Sian', '#0f1623' => 'Hitam'] as $color => $label): ?>
+                          <?php foreach (['#E56A4A' => 'Warm', '#1ABB9C' => 'Teal', '#066fd1' => 'Biru', '#4263eb' => 'Indigo', '#ae3ec9' => 'Ungu', '#d6336c' => 'Merah muda', '#d63939' => 'Merah', '#f76707' => 'Oranye', '#f59f00' => 'Kuning', '#2fb344' => 'Hijau', '#17a2b8' => 'Sian', '#0f1623' => 'Hitam'] as $color => $label): ?>
                             <button type="button" class="theme-settings-swatch" data-theme-color="<?= $color ?>" style="background:<?= $color ?>" title="<?= $label ?>" aria-label="<?= $label ?>" aria-pressed="false"></button>
                           <?php endforeach; ?>
                         </div>
@@ -497,6 +497,7 @@ $s = function (string $key) use ($settings) {
   <div class="dialog__panel">
     <div class="dialog__content">
       <div class="dialog__header">
+        <div class="modal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
         <h3 class="dialog__title" id="testEmailDialogTitle">Test Kirim Email</h3>
         <button type="button" class="dialog__close" aria-label="Tutup" data-stisla-dialog-dismiss>
           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true">

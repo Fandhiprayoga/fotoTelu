@@ -9,13 +9,13 @@ $favicon = setting('App.siteFavicon');
 $faviconUrl = ! empty($favicon) ? base_url($favicon) : base_url('assets/img/stisla-fill.svg');
 $currentUrl = uri_string();
 $isCurrent = static fn (string $path): bool => $currentUrl === $path || str_starts_with($currentUrl, $path . '/');
-$themePrimary = setting('App.themePrimary') ?? '#1ABB9C';
-$themePrimary = preg_match('/^#[0-9a-fA-F]{6}$/', (string) $themePrimary) ? $themePrimary : '#1ABB9C';
+$themePrimary = setting('App.themePrimary') ?? '#E56A4A';
+$themePrimary = preg_match('/^#[0-9a-fA-F]{6}$/', (string) $themePrimary) ? $themePrimary : '#E56A4A';
 $themeSidebar = setting('App.themeSidebar') ?? 'dark';
 $themeSidebar = in_array($themeSidebar, ['dark', 'black', 'light', 'brand'], true) ? $themeSidebar : 'dark';
-$themeRadius = (int) (setting('App.themeRadius') ?? 6);
+$themeRadius = (int) (setting('App.themeRadius') ?? 10);
 $themeRadius = max(0, min(16, $themeRadius));
-$themeSidebarWidth = (int) (setting('App.themeSidebarWidth') ?? 252);
+$themeSidebarWidth = (int) (setting('App.themeSidebarWidth') ?? 288);
 $themeSidebarWidth = max(200, min(320, $themeSidebarWidth));
 $themeFontSize = (float) (setting('App.themeFontSize') ?? 14);
 $themeFontSize = max(13, min(16, $themeFontSize));
@@ -45,6 +45,7 @@ $themeMode = in_array($themeMode, ['system', 'light', 'dark'], true) ? $themeMod
   <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
   <link rel="stylesheet" href="<?= base_url('gentelella/assets/main-v4-DB_ReeJG.css') ?>">
   <link rel="stylesheet" href="<?= base_url('gentelella/assets/dashboard-app.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('gentelella/assets/theme-9router.css') ?>">
   <style>
     :root {
       --primary: <?= esc($themePrimary) ?>;
@@ -69,13 +70,18 @@ $themeMode = in_array($themeMode, ['system', 'light', 'dark'], true) ? $themeMod
   <a class="skip-link" href="#main-content">Langsung ke konten</a>
 
   <aside class="sidebar" id="sidebar" aria-label="Navigasi utama">
+    <div class="traffic-lights" aria-hidden="true">
+      <span class="tl-dot tl-red"></span>
+      <span class="tl-dot tl-yellow"></span>
+      <span class="tl-dot tl-green"></span>
+    </div>
     <div class="sidebar-brand">
       <?php if (! empty($logoUrl)): ?>
       <img class="brand-icon" src="<?= esc($logoUrl, 'attr') ?>" alt="<?= esc($siteName) ?>">
       <?php else: ?>
       <div class="brand-icon"><?= esc(! empty($siteNameShort) ? strtoupper(substr($siteNameShort, 0, 1)) : strtoupper(substr($siteName, 0, 1))) ?></div>
       <?php endif; ?>
-      <div class="brand-name"><?= esc($siteName) ?></div>
+      <div class="brand-name"><?= esc($siteName) ?><small>v<?= esc(setting('App.siteVersion') ?? '1.0.0') ?></small></div>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-group">
@@ -222,6 +228,7 @@ $themeMode = in_array($themeMode, ['system', 'light', 'dark'], true) ? $themeMod
   <div class="modal-backdrop" id="logoutModal" style="display:none" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle" aria-describedby="logoutModalDescription">
       <div class="modal-header">
+        <div class="modal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
         <h2 class="modal-title" id="logoutModalTitle">Keluar dari akun?</h2>
         <button type="button" class="modal-close" data-logout-dismiss aria-label="Tutup">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8"></path></svg>
