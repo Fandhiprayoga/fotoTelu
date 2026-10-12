@@ -294,6 +294,102 @@ main.auth-page {
   border-radius: 9999px;
 }
 
+/* ── Collapsed rail (sidebar-rail) polish ────────────────────────────────
+   Overrides the bundled rail rules: the window dots and brand label are
+   hidden, icons get breathing room, the active pill stays a clean 40px
+   square, and the hover tooltip escapes the clipped nav. */
+@media (min-width: 769px) {
+  body.sidebar-rail {
+    --sidebar-w: 72px;
+  }
+
+  body.sidebar-rail .sidebar {
+    overflow: visible;
+  }
+
+  /* Window dots have no place in a 72px rail. */
+  body.sidebar-rail .traffic-lights {
+    display: none;
+  }
+
+  body.sidebar-rail .sidebar-brand {
+    justify-content: center;
+    padding: 14px 0;
+    min-height: 64px;
+  }
+
+  body.sidebar-rail .sidebar-brand .brand-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    font-size: 18px;
+  }
+
+  /* Let the tooltip live outside the clipped nav. */
+  body.sidebar-rail .sidebar-nav {
+    overflow: visible;
+    padding: 4px 0;
+  }
+
+  /* Subtle divider where group labels used to be. */
+  body.sidebar-rail .nav-group + .nav-group {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--sidebar-border);
+  }
+
+  body.sidebar-rail .nav-link {
+    justify-content: center;
+    gap: 0;
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    margin: 4px auto;
+    padding: 0;
+    border-radius: 10px;
+  }
+
+  /* ID selector outranks the class rule above. */
+  body.sidebar-rail #logoutTrigger {
+    width: 40px;
+    margin: 4px auto;
+  }
+
+  body.sidebar-rail .nav-link .icon {
+    opacity: .8;
+    width: 20px;
+    height: 20px;
+  }
+
+  body.sidebar-rail .nav-link:hover .icon,
+  body.sidebar-rail .nav-link.active .icon {
+    opacity: 1;
+  }
+
+  body.sidebar-rail .nav-link.active {
+    box-shadow: none;
+  }
+
+  body.sidebar-rail .sidebar-user {
+    justify-content: center;
+    padding: 12px 0;
+  }
+
+  body.sidebar-rail .sidebar-user .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* Tooltip: surface card + border, readable in both themes. */
+  body.sidebar-rail .nav-link[data-rail-label]:after {
+    background: var(--bg-surface);
+    color: var(--text);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 14px #0f172a26;
+    z-index: 120;
+  }
+}
+
 .modal-dots span:nth-child(1) { background: #ff5f56; }
 .modal-dots span:nth-child(2) { background: #3a3a3a33; }
 .modal-dots span:nth-child(3) { background: #3a3a3a33; }
