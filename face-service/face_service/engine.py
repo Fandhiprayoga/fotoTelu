@@ -107,6 +107,22 @@ class OpenCVEngine:
             self.detector.setInputSize((dw, dh))
             _, rows = self.detector.detect(detect_image)
             rows = [] if rows is None else rows
+            # YuNet can miss a close-up face when camera pixels make it much
+            # larger than the model's training scale. Retry the entire frame
+            # (not a crop) at bounded smaller sizes, keeping the same confidence
+            # threshold and retaining every face found in the successful pass.
+            if selfie and len(rows) == 0:
+                for max_side in (640, 320):
+                    if max_side >= max(dw, dh):
+                        continue
+                    retry_scale = max_side / max(width, height)
+                    dw, dh = max(1, round(width * retry_scale)), max(1, round(height * retry_scale))
+                    detect_image = cv2.resize(image, (dw, dh), interpolation=cv2.INTER_AREA)
+                    self.detector.setInputSize((dw, dh))
+                    _, retry_rows = self.detector.detect(detect_image)
+                    rows = [] if retry_rows is None else retry_rows
+                    if len(rows) > 0:
+                        break
             if selfie and len(rows) == 0:
                 raise FaceQualityError("selfie_no_face_detected")
             if selfie and len(rows) > 1:

@@ -69,7 +69,12 @@ quality resize. Guidance: well-lit, in focus, front-facing, move closer. These
 heuristics are provisional, not proof of face ownership/identity. Gallery indexing
 supports multiple faces or zero faces; more than 200 detected faces is rejected.
 Detection is downscaled to at most 1600px on the longest side; tiny/background faces
-can be missed. Alignment/embedding use original decoded pixels.
+can be missed. If no face is detected in a selfie, the complete frame is retried
+at 640px and then 320px (only when smaller than the previous pass). This helps
+close-up camera faces fit YuNet's detection scale without lowering confidence.
+Multiple faces still reject the selfie; size, frame and blur checks and
+alignment/embedding always use original decoded pixels. Gallery indexing keeps
+the single-scale pass.
 
 ## Scope, deletion and scoring
 
