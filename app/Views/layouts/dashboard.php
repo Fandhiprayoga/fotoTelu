@@ -92,6 +92,24 @@ $themeMode = in_array($themeMode, ['system', 'light', 'dark'], true) ? $themeMod
         </a>
       </div>
 
+      <?php if (activeGroupCan('photos.manage') || activeGroupCan('photos.search')): ?>
+      <div class="nav-group">
+        <div class="nav-label">FotoTelu</div>
+        <?php if (activeGroupCan('photos.manage')): ?>
+        <a class="nav-link <?= $isCurrent('admin/photos') ? 'active' : '' ?>" href="<?= site_url('admin/photos') ?>">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 7h7l2-3h9v16H3z"/><path d="M3 7V4h6"/></svg>
+          <span class="nav-text">File Manager Foto</span>
+        </a>
+        <?php endif; ?>
+        <?php if (activeGroupCan('photos.search')): ?>
+        <a class="nav-link <?= $isCurrent('photos/search') ? 'active' : '' ?>" href="<?= site_url('photos/search') ?>">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6M8 9h4M8 12h4"/></svg>
+          <span class="nav-text">Temukan Foto Saya</span>
+        </a>
+        <?php endif; ?>
+      </div>
+      <?php endif; ?>
+
       <?php if (activeGroupCan('admin.access')): ?>
       <div class="nav-group">
         <div class="nav-label">Administrasi</div>

@@ -640,16 +640,23 @@ $s = function (string $key) use ($settings) {
     btn.textContent = 'Mengirim...';
     resultDiv.classList.add('hidden');
 
-    fetch('<?= base_url('admin/settings/test-email') ?>', {
+    var tokenInput = document.querySelector('input[name="<?= csrf_token() ?>"]');
+    fetch('<?= site_url('admin/settings/test-email') ?>', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest',
-        '<?= csrf_header() ?>': '<?= csrf_hash() ?>'
+        '<?= csrf_header() ?>': tokenInput ? tokenInput.value : '<?= csrf_hash() ?>'
       },
       body: JSON.stringify({ email: emailTo, subject: subject, message: message })
     })
-    .then(function(r) { return r.json(); })
+    .then(function(r) {
+      var freshToken = r.headers.get('<?= csrf_header() ?>');
+      if (freshToken) {
+        document.querySelectorAll('input[name="<?= csrf_token() ?>"]').forEach(function(input) { input.value = freshToken; });
+      }
+      return r.json();
+    })
     .then(function(data) {
       resultDiv.classList.remove('hidden');
       resultDiv.className = 'mb-3 p-3 rounded text-sm';

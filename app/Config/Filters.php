@@ -43,7 +43,9 @@ class Filters extends BaseFilters
         'group'         => GroupFilter::class,
         'role'          => RoleFilter::class,
         'permission'    => PermissionFilter::class,
+        'activepermission' => PermissionFilter::class,
         'maintenance'   => MaintenanceFilter::class,
+        'photoprivacy'  => \App\Filters\PhotoPrivacyFilter::class,
     ];
 
     /**
@@ -62,12 +64,10 @@ class Filters extends BaseFilters
     public array $required = [
         'before' => [
             'forcehttps', // Force Global Secure Requests
-            'pagecache',  // Web Page Caching
+            // Authenticated content must not use a shared page cache.
         ],
         'after' => [
-            'pagecache',   // Web Page Caching
             'performance', // Performance Metrics
-            'toolbar',     // Debug Toolbar
         ],
     ];
 
@@ -84,10 +84,11 @@ class Filters extends BaseFilters
         'before' => [
             'maintenance',
             // 'honeypot',
-            // 'csrf',
+            'csrf',
             // 'invalidchars',
         ],
         'after' => [
+            'toolbar' => ['except' => ['photos/*', 'photo-files/*', 'admin/photos', 'admin/photos/*']],
             // 'honeypot',
             // 'secureheaders',
         ],
@@ -117,5 +118,8 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        'photoprivacy' => ['before' => ['photos/*', 'photo-files/*', 'admin/photos', 'admin/photos/*', 'register'],
+                          'after' => ['photos/*', 'photo-files/*', 'admin/photos', 'admin/photos/*']],
+    ];
 }

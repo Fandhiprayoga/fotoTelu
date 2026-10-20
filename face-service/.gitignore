@@ -1,0 +1,12 @@
+.venv/
+venv/
+models/
+data/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.py[cod]
+*.sqlite*
+.env
+.coverage
+htmlcov/

@@ -221,9 +221,15 @@ class UserController extends BaseController
             return redirect()->to('/admin/users')->with('error', 'Anda tidak bisa menghapus akun sendiri.');
         }
 
-        $this->userModel->delete($id, true);
+        try {
+            (new \App\Libraries\SelfieService())->deleteAccount($id, fn () => $this->userModel->delete($id, true));
+        } catch (\RuntimeException $exception) {
+            return redirect()->to(site_url('admin/users'))->with('error',
+                'Akun belum dapat dihapus. Silakan coba lagi.');
+        }
 
-        return redirect()->to('/admin/users')->with('success', 'User berhasil dihapus.');
+        return redirect()->to('/admin/users')->with('success',
+            'User berhasil dihapus. Pembersihan berkas selfie yang tertunda akan dicoba ulang secara otomatis.');
     }
 
     /**

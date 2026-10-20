@@ -24,6 +24,27 @@ $routes->get('maintenance', static function () {
 // ---------------------------------------------------------------
 $routes->group('', ['filter' => 'session'], static function ($routes) {
 
+    $routes->get('photos/search', 'PhotoSearchController::index', ['filter' => 'activepermission:photos.search']);
+    $routes->post('photos/search', 'PhotoSearchController::search', ['filter' => 'activepermission:photos.search']);
+    $routes->post('photos/selfie', 'PhotoSearchController::saveSelfie', ['filter' => 'activepermission:selfies.manage']);
+    $routes->post('photos/selfie/delete', 'PhotoSearchController::deleteSelfie', ['filter' => 'activepermission:selfies.manage']);
+    $routes->get('photo-files/(:segment)/(:segment)', 'PhotoFileController::show/$1/$2');
+
+    $routes->group('admin/photos', ['filter' => 'activepermission:photos.manage'], static function ($routes) {
+        $routes->get('/', 'PhotoManagerController::index');
+        $routes->get('album/(:num)', 'PhotoManagerController::album/$1');
+        $routes->post('albums', 'PhotoManagerController::createAlbum');
+        $routes->post('albums/(:num)/update', 'PhotoManagerController::updateAlbum/$1');
+        $routes->post('albums/(:num)/delete', 'PhotoManagerController::deleteAlbum/$1');
+        $routes->post('folders', 'PhotoManagerController::createFolder');
+        $routes->post('folders/(:num)/update', 'PhotoManagerController::updateFolder/$1');
+        $routes->post('folders/(:num)/delete', 'PhotoManagerController::deleteFolder/$1');
+        $routes->post('upload', 'PhotoManagerController::upload');
+        $routes->post('items/(:num)/update', 'PhotoManagerController::updatePhoto/$1');
+        $routes->post('items/(:num)/delete', 'PhotoManagerController::deletePhoto/$1');
+        $routes->post('items/(:num)/retry', 'PhotoManagerController::retryPhoto/$1');
+    });
+
     // Dashboard
     $routes->get('dashboard', 'DashboardController::index');
 

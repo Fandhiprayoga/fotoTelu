@@ -1,3 +1,9 @@
+# Fitur FotoTelu
+
+Panduan file manager foto, mesin wajah lokal, worker, privasi, dan deployment
+tersedia di [PHOTOS.md](PHOTOS.md). Layanan Python dan worker harus berjalan agar
+foto yang baru diunggah dapat dicari.
+
 # CodeIgniter 4 + Shield RBAC Boilerplate
 
 Boilerplate project CodeIgniter 4 dengan **CodeIgniter Shield** untuk autentikasi dan **Role-Based Access Control (RBAC)**, menggunakan template dashboard **Stisla**.

@@ -69,6 +69,15 @@ class AuthGroups extends ShieldAuthGroups
         // Reports
         'reports.view'        => 'Dapat melihat laporan',
         'reports.export'      => 'Dapat mengekspor laporan',
+
+        'photos.manage'       => 'Mengelola file foto privat',
+        'photos.upload'       => 'Mengunggah dan memproses foto',
+        'photos.delete'       => 'Menghapus foto',
+        'albums.manage'       => 'Mengelola album dan folder',
+        'albums.publish'      => 'Menerbitkan album untuk pencarian',
+        'photos.search'       => 'Mencari foto melalui selfie sendiri',
+        'photos.download'     => 'Mengunduh foto yang diizinkan',
+        'selfies.manage'      => 'Menyimpan dan menghapus selfie sendiri',
     ];
 
     /**
@@ -78,6 +87,9 @@ class AuthGroups extends ShieldAuthGroups
      */
     public array $matrix = [
         'superadmin' => [
+            'photos.*',
+            'albums.*',
+            'selfies.manage',
             'admin.*',
             'users.*',
             'roles.*',
@@ -85,6 +97,9 @@ class AuthGroups extends ShieldAuthGroups
             'reports.*',
         ],
         'admin' => [
+            'photos.*',
+            'albums.*',
+            'selfies.manage',
             'admin.access',
             'users.list',
             'users.create',
@@ -101,6 +116,9 @@ class AuthGroups extends ShieldAuthGroups
         ],
         'user' => [
             'dashboard.access',
+            'photos.search',
+            'photos.download',
+            'selfies.manage',
         ],
     ];
 }

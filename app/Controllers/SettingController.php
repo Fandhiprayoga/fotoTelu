@@ -174,6 +174,7 @@ class SettingController extends BaseController
      */
     public function testEmail()
     {
+        $this->response->setHeader(csrf_header(), csrf_hash());
         $json = $this->request->getJSON(true);
         $email = $json['email'] ?? '';
         $subject = $json['subject'] ?? 'Test Email';
