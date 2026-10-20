@@ -4,6 +4,65 @@ Panduan file manager foto, mesin wajah lokal, worker, privasi, dan deployment
 tersedia di [PHOTOS.md](PHOTOS.md). Layanan Python dan worker harus berjalan agar
 foto yang baru diunggah dapat dicari.
 
+## Catatan deployment dan worker FotoTelu
+
+Detail keamanan, konfigurasi layanan wajah, backup, dan batasan produksi ada di
+[PHOTOS.md](PHOTOS.md) serta [README layanan wajah](face-service/README.md).
+Ringkasan penerapan berikut melengkapi panduan tersebut:
+
+1. Deploy aplikasi CodeIgniter dengan document root mengarah ke direktori `public/`;
+    jangan sajikan root proyek, `writable/`, model, atau database SQLite melalui web.
+    Pasang dependency PHP produksi (`composer install --no-dev --optimize-autoloader`),
+    aktifkan ekstensi PHP yang dibutuhkan, dan siapkan database serta direktori privat
+    persisten dengan hak akses akun aplikasi.
+2. Atur konfigurasi `production` dan kredensial database secara privat. Terapkan
+    migrasi dengan `php spark migrate --all`. Untuk deployment pertama, siapkan
+    rahasia menggunakan `php spark photos:setup` **atau** injeksikan `FACE_SERVICE_TOKEN`
+    yang sama secara aman ke PHP dan layanan Python, serta atur `encryption.key`.
+    Jangan menjalankan setup untuk merotasi kunci yang sudah digunakan; perubahan kunci
+    tidak mengenkripsi ulang selfie lama.
+3. Siapkan layanan Python mengikuti bagian VPS di README layanan wajah: instal hanya
+    `face-service/requirements.txt`, unduh model terverifikasi, jalankan Uvicorn di
+    `127.0.0.1:8090` dengan satu worker di bawah supervisor. Jangan buka port 8090 ke
+    Internet. Uji health terautentikasi sebelum mengaktifkan pencarian.
+4. Jalankan antrean PHP sebagai **proses CLI tersendiri** di bawah supervisor, bukan
+    dari request web. Contoh unit systemd (ganti path, user, group, dan PHP binary
+    sesuai server):
+
+    ```ini
+    [Unit]
+    Description=FotoTelu photo queue worker
+    After=network.target mariadb.service
+
+    [Service]
+    Type=simple
+    User=fototelu
+    Group=www-data
+    WorkingDirectory=/srv/fototelu
+    Environment=CI_ENVIRONMENT=production
+    ExecStart=/usr/bin/php /srv/fototelu/spark photos:work
+    Restart=on-failure
+    RestartSec=3
+    UMask=0077
+    NoNewPrivileges=true
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+
+    Worker terus memeriksa antrean dan menangani upload serta penghapusan; SIGTERM
+    atau Ctrl+C menghentikannya setelah pekerjaan aktif selesai. Pastikan worker dan
+    web memakai versi kode, konfigurasi, database, serta storage foto yang sama.
+    Gunakan satu worker Python untuk inferensi; jumlah worker PHP dapat ditambah hanya
+    setelah kapasitas dan perilaku konkurensi database/storage diuji.
+5. Jadwalkan `php spark photos:cleanup` secara berkala (misalnya setiap menit),
+    pantau log dan pekerjaan/penghapusan tertunda, lalu siapkan backup terenkripsi
+    database, storage, kunci, dan indeks SQLite sesuai prosedur di [PHOTOS.md](PHOTOS.md).
+
+Untuk menjalankan satu pekerjaan secara manual saat diagnosis, gunakan
+`php spark photos:work --once`; jangan jadwalkan mode ini sebagai pengganti worker
+persisten tanpa mekanisme polling terjadwal.
+
 # CodeIgniter 4 + Shield RBAC Boilerplate
 
 Boilerplate project CodeIgniter 4 dengan **CodeIgniter Shield** untuk autentikasi dan **Role-Based Access Control (RBAC)**, menggunakan template dashboard **Stisla**.
